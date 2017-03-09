@@ -3,6 +3,8 @@ var Map = {
     height: 42,
     display: null,
     map: {},
+    free: [],
+    entities: {},
     points: {},
     pointMap: {0:"a",1:"b",2:"c",3:"d",4:"e",5:"f",6:"g",7:"h",8:"i",9:"j",10:"k",11:"l",12:"m",13:"n",14:"o"},
     
@@ -39,9 +41,14 @@ var Map = {
       
         this._hallways();
         this._borders();
-        //this._drawWholeMap();
+        this._stairs();
+        this.draw();
     },
     
+    _stairs: function(){
+        var key = this.free.random();
+        this.map[key] = {sym: ">", bg: "#5738D3", fg: "#D3D3D3"}
+    },
  
     _closestPoint: function(x, y){
     		distList = []
@@ -75,6 +82,7 @@ var Map = {
           		if (sym !== wall){
                 this.map[key].sym = empty;
                 this.map[key].bg = ROT.Color.toHex(ROT.Color.randomize([195,125,125], [5,2,3]));
+                this.free.push(key);
               }
           }
         }
@@ -143,6 +151,12 @@ var Map = {
             var y = parseInt(parts[1]);
             Game.display.draw(x, y, this.map[key].sym, this.map[key].fg, this.map[key].bg);
         }
+        // for (var key in this.entities) {
+        //     var parts = key.split(",");
+        //     var x = parseInt(parts[0]);
+        //     var y = parseInt(parts[1]);
+        //     Game.display.draw(x, y, this.entities[key].sym, this.entities[key].fg, this.entities[key].bg);
+        // }
     },
 };
 

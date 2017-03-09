@@ -13,8 +13,8 @@ var Game = {
         this.engine.start();
        
         Map.new();
-        Map.draw();
-        Player.spawn();
+        //Map.draw();
+        Player.spawn(Map.free);
         Menu.test();
         Menu.displayMenu();
     },  

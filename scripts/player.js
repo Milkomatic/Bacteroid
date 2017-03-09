@@ -16,9 +16,11 @@ var Player = {
         Game.display.draw(this.x,this.y, this.sym, this.fg, this.bg);
     }, 
 
-    spawn: function(){
-        this.x = 20;
-        this.y = 20;
+    spawn: function(free){
+        var key = free.random();
+        var parts = key.split(",");
+        this.x = parseInt(parts[0]);
+        this.y = parseInt(parts[1]);
         this.draw();
     },
     
@@ -30,7 +32,11 @@ var Player = {
 
     handleEvent: function(e){
         var code = e.keyCode;
-        
+        if (code == 13 || code == 32) {
+            this._interact();
+            return;
+        }
+
         var keyMap = {};
         keyMap[38] = 0;
         keyMap[33] = 1;
@@ -59,6 +65,19 @@ var Player = {
         Menu.addLog("You moved to: " + newX + "," + newY + "!");
 
         Game.engine.unlock();
+    },
+
+    _interact: function(){
+        var key = this.x + "," + this.y;
+        if (Map.map[key].sym ==">") {
+            Menu.addLog("You went down the stairs!");
+            // Game.engine.lock();
+            // window.removeEventListener("keydown", this);
+            Map.new();
+            this.spawn(Map.free);
+        } else {
+            Menu.addLog("There is nothing here!");
+        }
     },
 
 };
